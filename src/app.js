@@ -8,12 +8,6 @@ app.use(logger('dev'));
 app.use(json());
 app.use(urlencoded({extended: true}));
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: "Welcome to Express"
-  });
-})
-
 app.get('/validate_phone/:number', (req, res) => {
   let param = req.params.number
   let number = new PhoneNumber(param)
