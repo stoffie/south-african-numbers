@@ -22,4 +22,17 @@ describe('app page test', () => {
         done();
       });
   });
+
+  it('should validate a south african mobile number', done => {
+    server
+      .get('/validate_phone?number=27831234567')
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body).to.equal({
+          status: "valid",
+          message: "valid south african mobile number",
+          number: "27831234567"
+        })
+      })
+  })
 });
