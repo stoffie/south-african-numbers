@@ -13,9 +13,14 @@ app.get('/validate_phone/:number', (req, res) => {
   let number = new PhoneNumber(param)
   res.status(200).json({
     "status": number.status.name,
+    "type": number.status.type,
     "message": number.status.message,
     "number": number.extract
   })
+})
+
+app.post('/validate_phones', (req, res) => {
+  console.log("welcome to padova")
 })
 
 const server = app.listen(8080, () => console.log('Server running at http://localhost:8080'));
