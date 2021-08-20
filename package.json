@@ -1,5 +1,5 @@
 {
-  "name": "something",
+  "name": "south-african-numbers",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -7,7 +7,7 @@
     "start": "node ./build/app",
     "babel-node": "babel-node --presets='@babel/preset-env'",
     "dev": "nodemon --exec npm run babel-node -- src/app.js",
-    "test": "mocha --exit"
+    "test": "mocha --recursive --exit"
   },
   "keywords": [],
   "author": "",
