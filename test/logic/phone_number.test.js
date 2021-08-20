@@ -2,7 +2,7 @@ import {PhoneStatus, PhoneNumber} from '../../src/logic/phone_number'
 import {assert} from "chai";
 
 describe('PhoneNumber', () => {
-  it('should validate a mobile number if it starts with the country code 27 and 9 digits', () => {
+  it('should validate a mobile number if it has the country code 27 and 9 digits', () => {
     let phone = new PhoneNumber('27831234567')
     assert(phone.status === PhoneStatus.VALID, "Status equals VALID")
     assert(phone.extract === '27831234567', "Extracted number equals the number")
@@ -33,14 +33,14 @@ describe('PhoneNumber', () => {
   })
 
   it('should mark a deleted number as unrecoverable if the phone number has an unknown country code', () => {
-    let phone = new PhoneNumber('27836826107_DELETED_1488996550')
+    let phone = new PhoneNumber('639228325226_DELETED_1486375766')
     assert(phone.status === PhoneStatus.UNRECOVERABLE_DELETED_WRONG_COUNTRY_CODE, "Status equals UNRECOVERABLE_DELETED_WRONG_COUNTRY_CODE")
-    assert(phone.extract === "27836826107", "Extracted number equals null")
+    assert(phone.extract === null, "Extracted number equals null")
   })
 
-  it('should mark a mobile phone malformed when it is none of the cases above', () => {
+  it('should mark a mobile phone unrecoverable when it is none of the cases above', () => {
     let phone = new PhoneNumber('something')
-    assert(phone.status === PhoneStatus.UNRECOVERABLE, "Status equals MALFORMED")
+    assert(phone.status === PhoneStatus.UNRECOVERABLE, "Status equals UNRECOVERABLE")
     assert(phone.extract === null, "Extracted number equals null")
   })
 });
