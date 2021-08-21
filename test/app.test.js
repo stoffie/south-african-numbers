@@ -1,6 +1,6 @@
 import {expect, server} from './setup';
 
-describe('app page test', () => {
+describe('API Test', () => {
   it('should validate a south african mobile number', done => {
     server
       .get('/validate_phone/27831234567')
