@@ -1,4 +1,4 @@
-import {PhoneStatus, PhoneNumber} from '../../src/logic/phone_number'
+import {PhoneStatus, PhoneNumber} from '../../src/logic/phone_number.js'
 import {assert} from "chai";
 
 describe('PhoneNumber', () => {

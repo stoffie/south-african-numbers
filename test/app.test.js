@@ -1,8 +1,8 @@
-import {expect, server} from './setup';
+import {expect, agent} from './setup.js';
 
 describe('API Test', () => {
   it('should validate a south african mobile number', done => {
-    server
+    agent
       .get('/validate_phone/27831234567')
       .expect(200)
       .end((err, res) => {
@@ -17,7 +17,7 @@ describe('API Test', () => {
   })
 
   it('should reject a malformed south african mobile number', done => {
-    server
+    agent
       .get('/validate_phone/something')
       .expect(200)
       .end((err, res) => {
@@ -29,5 +29,15 @@ describe('API Test', () => {
         })
         done()
       })
+  })
+
+  it ('should consume a file provided by API upload and display processed result', done => {
+    agent
+      .put('/upload_xlsx')
+      .attach('xlsx', 'assets/South_African_Mobile_Numbers.xlsx', 'South_African_Mobile_Numbers.xlsx')
+      .expect(204)
+      .end(() => {
+        done()
+      });
   })
 });

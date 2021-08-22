@@ -1,6 +1,11 @@
 import logger from 'morgan';
 import express, {json, urlencoded} from 'express';
-import {PhoneNumber} from "./logic/phone_number";
+import {PhoneNumber} from "./logic/phone_number.js";
+import {XlsxParser} from "./logic/xlsx_parser.js";
+import multer from "multer";
+import {PhoneNumberModel} from "./sequelize.js";
+
+const upload = multer({storage: multer.memoryStorage({})})
 
 const app = express();
 
@@ -19,10 +24,17 @@ app.get('/validate_phone/:number', (req, res) => {
   })
 })
 
-app.post('/validate_phones', (req, res) => {
-  console.log("welcome to padova")
+app.put('/upload_xlsx', upload.single('xlsx'), (req, res) => {
+  let parser = new XlsxParser()
+  let data = parser.parse(req.file.buffer)
+  //console.log(data)
+  res.status(204).end()
 })
 
-const server = app.listen(8080, () => console.log('Server running at http://localhost:8080'));
+app.get('/', (req, res) => {
+  res.status(200).json(PhoneNumberModel.findAndCountAll())
+})
 
-module.exports = server
+export const server = app.listen(8080, async () => {
+  console.log('Server running at http://localhost:8080')
+});

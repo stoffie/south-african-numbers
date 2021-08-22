@@ -1,4 +1,4 @@
-import {XlsxParser} from "../../src/logic/xlsx_parser";
+import {XlsxParser} from "../../src/logic/xlsx_parser.js";
 import * as fs from "fs";
 import {assert} from "chai";
 
