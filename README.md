@@ -24,7 +24,7 @@ npm run dev
 ```
 Il servizio sarà avviato all'indirizzo http://localhost:8080
 
-Utilizzare il seguente comando (da WLS, oppure usando una installazione di curl tipo cygwin) per verificare un singolo numero:
+Utilizzare il seguente comando (da WSL, oppure usando una installazione di curl tipo cygwin) per verificare un singolo numero:
 ```
 curl http://localhost:8080/validate_phone/27831234567
 ```
@@ -36,4 +36,4 @@ A questo punto per scaricare i numeri estratti suddivisi per categoria (corretti
 ```
 curl http://localhost:8080/
 ```
-Alternativamente se non si adopopera WLS è possibile utilizzare un programma come Postman per la verifica del funzionamento delle API.
+Alternativamente se non si adopopera WSL è possibile utilizzare un programma come Postman per la verifica del funzionamento delle API.
