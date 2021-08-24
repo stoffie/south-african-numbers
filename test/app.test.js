@@ -31,13 +31,36 @@ describe('API Test', () => {
       })
   })
 
-  it ('should consume a file provided by API upload and display processed result', done => {
-    agent
+  it('should consume a file provided by API upload and display processed result', async () => {
+    await agent
       .put('/upload_xlsx')
       .attach('xlsx', 'assets/South_African_Mobile_Numbers.xlsx', 'South_African_Mobile_Numbers.xlsx')
       .expect(204)
-      .end(() => {
-        done()
-      });
+
+    let res = await agent
+      .get('/')
+      .expect(200)
+
+    expect(res.body.valid).to.be.an('array')
+    expect(res.body.valid).to.deep.include({
+      original: '27736529279',
+      number: '27736529279',
+      status: 'VALID',
+      type: 'VALID'
+    })
+    expect(res.body.recoverable).to.be.an('array')
+    expect(res.body.recoverable).to.deep.include({
+      original: '730276061',
+      number: '27730276061',
+      status: 'RECOVERABLE_MISSING_COUNTRY_CODE',
+      type: 'RECOVERABLE'
+    })
+    expect(res.body.unrecoverable).to.be.an('array')
+    expect(res.body.unrecoverable).to.deep.include({
+      original: '6478342944',
+      number: null,
+      status: 'UNRECOVERABLE_WRONG_COUNTRY_CODE',
+      type: 'UNRECOVERABLE'
+    })
   })
 });

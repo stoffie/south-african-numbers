@@ -4,6 +4,7 @@ import {PhoneNumber} from "./logic/phone_number.js";
 import {XlsxParser} from "./logic/xlsx_parser.js";
 import multer from "multer";
 import {PhoneNumberModel} from "./sequelize.js";
+import 'express-async-errors'
 
 const upload = multer({storage: multer.memoryStorage({})})
 
@@ -24,15 +25,31 @@ app.get('/validate_phone/:number', (req, res) => {
   })
 })
 
-app.put('/upload_xlsx', upload.single('xlsx'), (req, res) => {
+app.put('/upload_xlsx', upload.single('xlsx'), async (req, res) => {
   let parser = new XlsxParser()
   let data = parser.parse(req.file.buffer)
-  //console.log(data)
+  let result = data.map((e) => {
+    let phone = new PhoneNumber(e)
+    return {number: phone.extract, original: e, status: phone.status.name, type: phone.status.type}
+  })
+  await PhoneNumberModel.bulkCreate(result, {updateOnDuplicate: ["original"] })
   res.status(204).end()
 })
 
-app.get('/', (req, res) => {
-  res.status(200).json(PhoneNumberModel.findAndCountAll())
+app.get('/', async (req, res) => {
+  let valid = await PhoneNumberModel.findAll({
+    attributes: ['original', 'number', 'status', 'type'],
+    where: {type: "VALID"}
+  })
+  let recoverable = await PhoneNumberModel.findAll({
+    attributes: ['original', 'number', 'status', 'type'],
+    where: {type: "RECOVERABLE"}
+  })
+  let unrecoverable = await PhoneNumberModel.findAll({
+    attributes: ['original', 'number', 'status', 'type'],
+    where: {type: "UNRECOVERABLE"}
+  })
+  res.status(200).json({valid, recoverable, unrecoverable})
 })
 
 export const server = app.listen(8080, async () => {
